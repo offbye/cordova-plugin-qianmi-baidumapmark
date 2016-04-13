@@ -39,6 +39,13 @@
         <source-file src="src/ios/BaiduMapViewController.swift"/>
         <resource-file src="src/ios/baidumapmark.bundle"/>
 
+        <framework src="AVFoundation.framework" />
+        <framework src="CoreLocation.framework" />
+        <framework src="CoreGraphics.framework" />
+        <framework src="CoreTelephony.framework" />
+        <framework src="SystemConfiguration.framework" />
+        <framework src="Security.framework" />
+
         <!--以下是百度地图SDK文件，请到百度lbs云官网更新版本-->
         <resource-file src="src/ios/mapapi.bundle"/>
         <framework src="src/ios/BaiduMapAPI_Base.framework" custom="true"/>

@@ -4,11 +4,11 @@
  */
 var cordova = require('cordova');
 
-var BaiduMap = function() {};
+var BaiduMapMark = function() {};
 
-BaiduMap.prototype.location = function(success, error,addressInfo) {
-    cordova.exec(success, error, 'BaiduMapPlugin', 'location',[addressInfo,'com.qianmi.app.LbsAmap3DActivity']);
+BaiduMapMark.prototype.location = function(success, error,addressInfo) {
+    cordova.exec(success, error, 'BaiduMapMarkPlugin', 'location',[addressInfo,'com.qianmi.app.LbsAmap3DActivity']);
 };
 
-var baiduMap = new BaiduMap();
-module.exports = baiduMap;
+var baiduMapMark = new BaiduMapMark();
+module.exports = baiduMapMark;
