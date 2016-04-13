@@ -1,0 +1,23 @@
+{
+  "name": "cordova-plugin-console",
+  "version": "1.0.0",
+  "description": "Cordova Console Plugin",
+  "cordova": {
+    "id": "cordova-plugin-qianmi-baidumapmark",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/offbye/cordova-plugin-baidumapmark"
+  },
+  "keywords": [
+    "cordova",
+    "baidumap",
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "author": "offbye",
+  "license": "Apache 2.0"
+}
