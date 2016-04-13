@@ -26,21 +26,22 @@ func log(message: String){
 
     func location(command: CDVInvokedUrlCommand) {
         log("location")
-        let message = command.arguments[0] as! String
-        print(message)
-        
-        let point = convertStringToDictionary(message)
-        print(convertStringToDictionary(message))
-        
         var pointUser = PointUser()
-        pointUser.storeName = point!["storeName"]!
-        pointUser.pro = point!["pro"]!
-        pointUser.city = point!["city"]!
-        pointUser.dist = point!["dist"]!
-        pointUser.address = point!["address"]!
-        pointUser.latitude = Double(point!["latitude"]!)
-        pointUser.longitude = Double(point!["longitude"]!)
-        print(pointUser)
+        if command.arguments != nil && command.arguments.count > 0 {
+            let geoInfo = command.arguments[0] as! String
+            print(geoInfo)
+            let point = convertStringToDictionary(geoInfo)
+            print(convertStringToDictionary(geoInfo))
+
+            pointUser.storeName = point!["storeName"]!
+            pointUser.pro = point!["pro"]!
+            pointUser.city = point!["city"]!
+            pointUser.dist = point!["dist"]!
+            pointUser.address = point!["address"]!
+            pointUser.latitude = Double(point!["latitude"]!)
+            pointUser.longitude = Double(point!["longitude"]!)
+            print(pointUser)
+        }
         
         let mapVc = BaiduMapViewController()
         mapVc.isAnon = true

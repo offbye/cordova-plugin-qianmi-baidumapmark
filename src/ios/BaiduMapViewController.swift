@@ -8,7 +8,7 @@
 
 import UIKit
 struct PointUser{
-    var storeName:String?
+    var storeName:String = ""
     var pro:String?
     var city:String?
     var dist:String?
@@ -23,17 +23,24 @@ struct PointUser{
     var address: String?
   
     func toJson() -> String {
-        let json = "{\"storeName\":\"\(storeName!)\", \"pro\":\"\(pro!)\", \"city\":\"\(city!)\", \"dist\":\"\(dist!)\", \"longitude\":\"\(longitude!)\", \"latitude\":\"\(latitude!)\", \"address\":\"\(address!)\"}"
+        let json = "{\"storeName\":\"\(storeName)\", \"pro\":\"\(pro!)\", \"city\":\"\(city!)\", \"dist\":\"\(dist!)\", \"longitude\":\"\(longitude!)\", \"latitude\":\"\(latitude!)\", \"address\":\"\(address!)\"}"
         return json
+    }
+    
+    func isValid() -> Bool {
+        
+        if self.address != nil && self.latitude != nil && self.longitude != nil && self.pro != nil && self.city != nil && self.dist != nil{
+            return true
+        } else {
+            return false
+        }
     }
 }
 
 class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate {
     let bundlePath = NSBundle.mainBundle().pathForResource("baidumapmark", ofType: "bundle")
     var myBundle: NSBundle?
-    var remarkImage : UIImage!
-    var markImage : UIImage!
-
+    
     var baiduMapPlugin: BaiduMapPlugin?
     var callBackId : String?
     /// 百度地图视图
@@ -43,19 +50,13 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
     /// 当前用户位置
     var userLocation: BMKUserLocation!
     var geocodeSearch: BMKGeoCodeSearch!
-
-    var pointUsers:[PointUser]=[]
     
     //第一次是否加载完成
     var isFirstLoding : Bool!
     
     var anon: BMKPointAnnotation!
     var pointUser: PointUser!
-    /**
-     * 地图坐标点-经度纬度
-     */
-    var longitude:Double?
-    var latitude:Double?
+    
     //联想查询地址定位
     //是否需要标注
     //是否为预览没事
@@ -115,15 +116,13 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
         NSLog("location failure！\(error)")
     }
     
-    
     //网点标注
     func mark(sender: AnyObject) {
-        
-        self.pointUser.latitude = self.latitude!
-        self.pointUser.longitude = self.longitude!
-        //self.pointUser.address = self.address.text!
-
-        markBtn.setBackgroundImage(markImage, forState: .Normal)
+        guard self.pointUser.isValid() else {
+            print ("err")
+            return
+        }
+        self.markBtn.setTitle("重新标注", forState: .Normal)
         
         let alertVC = UIAlertController(title: "", message: "当前位置是\(self.pointUser.pro! + self.pointUser.city! + self.pointUser.dist! +  self.address.text!),确定标注吗?" , preferredStyle: .Alert)
         let okAction = UIAlertAction(title: "确定", style: .Default){
@@ -159,8 +158,6 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
         mapView.removeAnnotations(mapView.annotations)
         addOverlay(mapPoi.text,description: mapPoi.text,coordinator: mapPoi.pt)
         print("您点击了地图标注\(mapPoi.text)，当前经纬度:(\(mapPoi.pt.longitude),\(mapPoi.pt.latitude))，缩放级别:\(mapView.zoomLevel)，旋转角度:\(mapView.rotation)，俯视角度:\(mapView.overlooking)")
-        self.latitude = mapPoi.pt.latitude
-        self.longitude = mapPoi.pt.longitude
         address.text = mapPoi.text
         reverseGeo(mapPoi.pt.latitude, mapPoi.pt.longitude)
     }
@@ -174,12 +171,15 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
         let lon = userLocation.location.coordinate.longitude
         
         print("目前位置：\(lat), \(lon)")
+
         reverseGeo(lat,lon)
         locationService.stopUserLocationService()
     }
     
     func reverseGeo(latitude: CLLocationDegrees, _ longitude: CLLocationDegrees) {
         print("reverseGeo \(latitude), \(longitude)")
+        self.pointUser.latitude = latitude
+        self.pointUser.longitude = longitude
         let reverseGeocodeSearchOption = BMKReverseGeoCodeOption()
         reverseGeocodeSearchOption.reverseGeoPoint = CLLocationCoordinate2DMake(latitude,longitude)
         let flag = geocodeSearch.reverseGeoCode(reverseGeocodeSearchOption)
@@ -215,9 +215,6 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
 //        let ret = mapManager.start(baiduAk, generalDelegate: nil)
 //        print("viewDidLoad \(ret)")
         myBundle = NSBundle(path: bundlePath!)
-
-        remarkImage = UIImage(named: "images/dtbz_btn_remark.png", inBundle: myBundle, compatibleWithTraitCollection: nil)
-        markImage = UIImage(named: "images/dtbz_btn_mark.png", inBundle: myBundle, compatibleWithTraitCollection: nil)
         
         initViews()
         locationService = BMKLocationService()
@@ -229,23 +226,17 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
         locationService.distanceFilter = 10.0
 //                locationService.startUserLocationService()
         
-        if self.pointUser != nil && self.pointUser.latitude != nil {
-            self.latitude = self.pointUser.latitude
+        if self.pointUser != nil && self.pointUser.latitude != nil && self.pointUser.longitude != nil{
+            self.markBtn.setTitle("重新标注", forState: .Normal)
+            
+            let pt: CLLocationCoordinate2D = CLLocationCoordinate2DMake(pointUser.latitude!,pointUser.longitude!)
+            if isAnon! {
+                addOverlay(pointUser.storeName, description: pointUser.address!, coordinator: pt)
+                mapView.setCenterCoordinate(pt, animated: true)
+            }
         }
-        if self.pointUser != nil && self.pointUser.longitude != nil {
-            self.longitude = self.pointUser.longitude
+        if self.pointUser != nil && self.pointUser.address != nil {
             self.address.text = self.pointUser.address
-        }
-        
-        if nil != self.longitude && self.longitude > 0 {
-            self.markBtn.setBackgroundImage(markImage, forState: .Normal)
-        }
-        
-        
-        let pt: CLLocationCoordinate2D = CLLocationCoordinate2DMake(pointUser.latitude!,pointUser.longitude!)
-        if isAnon! {
-            addOverlay(pointUser.storeName, description: pointUser.address, coordinator: pt)
-            mapView.setCenterCoordinate(pt, animated: true)
         }
 
         // NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(locMe(_:)), userInfo: nil, repeats: false)
@@ -301,7 +292,7 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
         let iconSize = CGFloat(40)
         locButton = UIButton(frame: CGRectMake(10, self.view.frame.height - 110 , iconSize, iconSize))
         //locButton.setTitle("定位", forState: .Normal)
-        locButton.setBackgroundImage(remarkImage, forState: UIControlState.Normal)
+        locButton.setBackgroundImage(UIImage(named: "images/dtbz_btn_remark.png", inBundle: myBundle, compatibleWithTraitCollection: nil), forState: UIControlState.Normal)
         locButton.layer.cornerRadius = 8
         locButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         locButton.addTarget(self, action:#selector(self.locMe(_:)), forControlEvents:UIControlEvents.TouchUpInside)
@@ -334,10 +325,9 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
         address = UITextField(frame: CGRectMake(40, 10, self.view.frame.width - 200, 32))
     
         markBtn = UIButton(frame: CGRectMake(self.view.frame.width - 140, 10, 80, 32))
-        //markBtn.setTitle("确定标注", forState: .Normal)
-        //markBtn.backgroundColor = UIColor.blueColor()
-        
-        markBtn.layer.cornerRadius = 5
+        markBtn.setTitle("确定标注", forState: .Normal)
+        markBtn.backgroundColor = UIColor(red:0.27, green:0.51, blue:0.93, alpha:1.00)
+        markBtn.layer.cornerRadius = 3
         markBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         markBtn.addTarget(self, action:#selector(self.mark(_:)), forControlEvents:UIControlEvents.TouchUpInside)
         
