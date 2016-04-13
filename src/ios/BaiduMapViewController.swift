@@ -129,7 +129,7 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
         let okAction = UIAlertAction(title: "确定", style: .Default){
             (action: UIAlertAction!) -> Void in
             print("you choose save")
-            
+            self.pointUser.address = self.address.text!
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: self.pointUser.toJson())
             print(pluginResult.message)
             self.baiduMapPlugin!.commandDelegate!.sendPluginResult(pluginResult, callbackId: self.callBackId!)
@@ -196,8 +196,8 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
         
         if error == BMK_SEARCH_NO_ERROR {
             print(result.address)
-            self.address.text = result.address
             self.pointUser.address = result.addressDetail.streetName + result.addressDetail.streetNumber
+            self.address.text = self.pointUser.address
             print(self.pointUser.address)
             self.pointUser.pro = result.addressDetail.province
             self.pointUser.city = result.addressDetail.city
