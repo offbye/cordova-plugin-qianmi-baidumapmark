@@ -125,7 +125,7 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
 
         markBtn.setBackgroundImage(markImage, forState: .Normal)
         
-        let alertVC = UIAlertController(title: "", message: "当前位置是\(self.address.text!),确定标注吗?" , preferredStyle: .Alert)
+        let alertVC = UIAlertController(title: "", message: "当前位置是\(self.pointUser.pro! + self.pointUser.city! + self.pointUser.dist! +  self.address.text!),确定标注吗?" , preferredStyle: .Alert)
         let okAction = UIAlertAction(title: "确定", style: .Default){
             (action: UIAlertAction!) -> Void in
             print("you choose save")
