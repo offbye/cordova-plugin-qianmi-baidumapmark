@@ -41,7 +41,7 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
     let bundlePath = NSBundle.mainBundle().pathForResource("baidumapmark", ofType: "bundle")
     var myBundle: NSBundle?
     
-    var baiduMapPlugin: BaiduMapPlugin?
+    var baiduMapMarkPlugin: BaiduMapMarkPlugin?
     var callBackId : String?
     /// 百度地图视图
     var mapView: BMKMapView!
@@ -131,7 +131,7 @@ class BaiduMapViewController: UIViewController, BMKMapViewDelegate, BMKLocationS
             self.pointUser.address = self.address.text!
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: self.pointUser.toJson())
             print(pluginResult.message)
-            self.baiduMapPlugin!.commandDelegate!.sendPluginResult(pluginResult, callbackId: self.callBackId!)
+            self.baiduMapMarkPlugin!.commandDelegate!.sendPluginResult(pluginResult, callbackId: self.callBackId!)
             self.dismissViewControllerAnimated(true, completion: nil)
         }
         let cancelAction = UIAlertAction(title: "取消", style: .Cancel, handler: nil)

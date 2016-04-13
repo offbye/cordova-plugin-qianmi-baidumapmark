@@ -1,23 +1,22 @@
 //
-//  BaiduMapPlugin.swift
-//  ionic-BaiduMap
+//  BaiduMapMarkPlugin.swift
+//  cordova-BaiduMapMarkPlugin
 //
 //  Created by zxt on 2016/04/08.
 //
 //
 
 import Foundation
-import AudioToolbox
 import WebKit
 
-let TAG = "BaiduMapPlugin"
+let TAG = "BaiduMapMarkPlugin"
 
 func log(message: String){
     NSLog("%@ - %@", TAG, message)
 }
 
 @available(iOS 8.0, *)
-@objc(HWPBaiduMapPlugin) class BaiduMapPlugin : CDVPlugin {
+@objc(HWPBaiduMapMarkPlugin) class BaiduMapMarkPlugin : CDVPlugin {
     let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
 
     func initialize(command: CDVInvokedUrlCommand) {
@@ -47,7 +46,7 @@ func log(message: String){
         mapVc.isAnon = true
         mapVc.pointUser = pointUser
         mapVc.callBackId = command.callbackId
-        mapVc.baiduMapPlugin = self
+        mapVc.baiduMapMarkPlugin = self
         self.viewController?.presentViewController(mapVc, animated: true,completion: nil)
     }
     

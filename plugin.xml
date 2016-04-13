@@ -35,7 +35,7 @@
           </feature>
         </config-file>
         <header-file src="src/ios/BaiduMap-Bridging-Header.h" />
-        <source-file src="src/ios/BaiduMapPlugin.swift"/>
+        <source-file src="src/ios/BaiduMapMarkPlugin.swift"/>
         <source-file src="src/ios/BaiduMapViewController.swift"/>
         <resource-file src="src/ios/baidumapmark.bundle"/>
 
