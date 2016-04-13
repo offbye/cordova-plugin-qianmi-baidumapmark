@@ -1,6 +1,6 @@
 /**
- * Created by lenny on 16/01/19.
- * 涉及要改名称 先不变
+ * Created by zxt on 16/04/13.
+ * BaiduMapMark
  */
 var cordova = require('cordova');
 
