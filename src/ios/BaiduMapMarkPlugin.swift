@@ -9,22 +9,15 @@
 import Foundation
 import WebKit
 
-let TAG = "BaiduMapMarkPlugin"
-
-func log(message: String){
-    NSLog("%@ - %@", TAG, message)
-}
-
 @available(iOS 8.0, *)
-@objc(HWPBaiduMapMarkPlugin) class BaiduMapMarkPlugin : CDVPlugin {
-    let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+@objc(HWPBaiduMapPlugin) class BaiduMapPlugin : CDVPlugin {
 
     func initialize(command: CDVInvokedUrlCommand) {
-        log("BaiduMapPlugin initialization")
+        print("BaiduMapPlugin initialization")
     }
 
     func location(command: CDVInvokedUrlCommand) {
-        log("location")
+        print("location")
         var pointUser = PointUser()
         if command.arguments != nil && command.arguments.count > 0 {
             let geoInfo = command.arguments[0] as! String
@@ -41,15 +34,15 @@ func log(message: String){
             pointUser.longitude = Double(point!["longitude"]!)
             print(pointUser)
         }
-        
+
         let mapVc = BaiduMapViewController()
         mapVc.isAnon = true
         mapVc.pointUser = pointUser
         mapVc.callBackId = command.callbackId
-        mapVc.baiduMapMarkPlugin = self
+        mapVc.baiduMapPlugin = self
         self.viewController?.presentViewController(mapVc, animated: true,completion: nil)
     }
-    
+
     func convertStringToDictionary(text: String) -> [String:String]? {
         if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
             do {
