@@ -7,7 +7,7 @@ var cordova = require('cordova');
 var BaiduMapMark = function() {};
 
 BaiduMapMark.prototype.location = function(success, error,addressInfo) {
-    cordova.exec(success, error, 'BaiduMapMarkPlugin', 'location',[addressInfo,'com.qianmi.app.LbsAmap3DActivity']);
+    cordova.exec(success, error, 'BaiduMapMark', 'location',[addressInfo,'com.qianmi.app.LbsAmap3DActivity']);
 };
 
 var baiduMapMark = new BaiduMapMark();
