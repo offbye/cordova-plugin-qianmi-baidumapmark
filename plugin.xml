@@ -5,8 +5,8 @@
     <description>BaiduMap Mark plugin</description>
     <license>Apache 2.0</license>
     <keywords>cordova, phonegap, geolocation, BaiduMap Mark</keywords>
-    <repo>https://github.com/offbye/cordova-plugin-baidumapmark.git</repo>
-    <issue>https://github.com/offbye/cordova-plugin-baidumapmark/issues</issue>
+    <repo>https://github.com/offbye/cordova-plugin-qianmi-baidumapmark.git</repo>
+    <issue>https://github.com/offbye/cordova-plugin-qianmi-baidumapmark/issues</issue>
     <engines>
         <engine name="cordova" version=">=3.0.0" />
     </engines>
@@ -30,8 +30,8 @@
             </array>
         </config-file>
         <config-file target="config.xml" parent="/*">
-          <feature name="BaiduMapPlugin">
-            <param name="ios-package" value="HWPBaiduMapPlugin"/>
+          <feature name="BaiduMapMark">
+            <param name="ios-package" value="HWPBaiduMapMarkPlugin"/>
           </feature>
         </config-file>
         <header-file src="src/ios/BaiduMap-Bridging-Header.h" />
