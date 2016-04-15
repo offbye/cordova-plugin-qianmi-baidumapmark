@@ -10,10 +10,10 @@ import Foundation
 import WebKit
 
 @available(iOS 8.0, *)
-@objc(HWPBaiduMapPlugin) class BaiduMapPlugin : CDVPlugin {
+@objc(HWPBaiduMapMarkPlugin) class BaiduMapMarkPlugin : CDVPlugin {
 
     func initialize(command: CDVInvokedUrlCommand) {
-        print("BaiduMapPlugin initialization")
+        print("BaiduMapMarkPlugin initialization")
     }
 
     func location(command: CDVInvokedUrlCommand) {
@@ -34,15 +34,15 @@ import WebKit
             pointUser.longitude = Double(point!["longitude"]!)
             print(pointUser)
         }
-
+        
         let mapVc = BaiduMapViewController()
         mapVc.isAnon = true
         mapVc.pointUser = pointUser
         mapVc.callBackId = command.callbackId
-        mapVc.baiduMapPlugin = self
+        mapVc.baiduMapMarkPlugin = self
         self.viewController?.presentViewController(mapVc, animated: true,completion: nil)
     }
-
+    
     func convertStringToDictionary(text: String) -> [String:String]? {
         if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
             do {

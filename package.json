@@ -1,7 +1,7 @@
 {
-  "name": "cordova-plugin-console",
+  "name": "cordova-plugin-qianmi-baidumapmark",
   "version": "1.0.0",
-  "description": "Cordova Console Plugin",
+  "description": "Cordova BaiduMap Mark Plugin",
   "cordova": {
     "id": "cordova-plugin-qianmi-baidumapmark",
     "platforms": [
